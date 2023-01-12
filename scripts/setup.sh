@@ -8,9 +8,13 @@ failure() {
 }
 trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
+WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/.."
+
 set -o pipefail
 
 main(){
+  cd ${WORKDIR}
+
   pip3 install --upgrade virtualenv
   mkdir -pv .venv
   python3 -m virtualenv .venv

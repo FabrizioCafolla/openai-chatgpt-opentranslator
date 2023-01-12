@@ -112,6 +112,10 @@ def main(translate, text, filepath, engine, max_token, temperature, verbose):
         f'# Request token limit: {request_token}/{_TOKEN_LIMITS_PER_REQUEST[engine]}')
 
     try:
+        if request_token > _TOKEN_LIMITS_PER_REQUEST[engine]:
+            raise Exception(
+                f'the required tokens {request_token} are greater than the limit of {_TOKEN_LIMITS_PER_REQUEST[engine]}')
+
         response = openai.Completion.create(
             model=engine,
             prompt=text,
