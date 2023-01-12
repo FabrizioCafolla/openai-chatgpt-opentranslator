@@ -93,28 +93,28 @@ def echo(text, *args, **kwargs):
 @click.option('--max-token', default=256, help='The maximum number of tokens to generate in the completion.')
 @click.option('-v', '--verbose', default=1, count=True)
 def main(translate, text, filepath, engine, max_token, temperature, verbose):
-    set_verbosity(verbose)
-
-    prefix = f'Translate the following text into {translate}'
-
-    if filepath:
-        text = render_file(filepath=filepath)
-
-    if not text:
-        raise Exception('[ERR] No text provided to the command')
-
-    text = f'{prefix}:\n{text}'
-
-    request_token = round(_WORDS / len(text))
-    request_pricing = calculate_pricing(engine, request_token)
-    debug(f'# Request cost: ${request_pricing}')
-    debug(
-        f'# Request token limit: {request_token}/{_TOKEN_LIMITS_PER_REQUEST[engine]}')
-
     try:
+        set_verbosity(verbose)
+
+        prefix = f'Translate the following text into {translate}'
+
+        if filepath:
+            text = render_file(filepath=filepath)
+
+        if not text:
+            raise Exception('No text provided to the command')
+
+        text = f'{prefix}:\n{text}'
+
+        request_token = round(_WORDS / len(text))
+        request_pricing = calculate_pricing(engine, request_token)
+        debug(f'# Request cost: ${request_pricing}')
+        debug(
+            f'# Request token limit: {request_token}/{_TOKEN_LIMITS_PER_REQUEST[engine]}')
+
         if request_token > _TOKEN_LIMITS_PER_REQUEST[engine]:
             raise Exception(
-                f'the required tokens {request_token} are greater than the limit of {_TOKEN_LIMITS_PER_REQUEST[engine]}')
+                f'The required tokens {request_token} are greater than the limit of {_TOKEN_LIMITS_PER_REQUEST[engine]}')
 
         response = openai.Completion.create(
             model=engine,
@@ -137,7 +137,7 @@ def main(translate, text, filepath, engine, max_token, temperature, verbose):
             if len(choices) > 0:
                 translated_text = choices[0]['text']
     except Exception as e:
-        info(str(e))
+        echo(f'[ERR] {str(e)}')
         sys.exit(1)
     else:
         info('\n# Input:')
