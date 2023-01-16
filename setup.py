@@ -30,5 +30,5 @@ setup(
     packages=find_packages(exclude=['tests', 'tests.*']),
     author='FabrizioCafolla',
     author_email='developer@fabriziocafolla.com',
-    url='https://github.com/fabriziocafolla/opentranslator',
+    url='https://github.com/fabriziocafolla/openai-chatgpt-opentranslator',
 )
