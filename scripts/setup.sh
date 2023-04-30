@@ -23,8 +23,9 @@ main(){
   source .venv/bin/activate
 
   pip3 install -r requirements.txt
-  pre-commit install
-  pre-commit run --all-files
+  python -m pre_commit autoupdate
+  python -m pre_commit install
+  python -m pre_commit run --all-files
 }
 
 main "$@"
